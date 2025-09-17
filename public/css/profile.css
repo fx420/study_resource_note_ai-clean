@@ -1,0 +1,169 @@
+/* ---------- Card ---------- */
+.profile-card {
+  max-width: 700px;
+  background-color: #0b1f3e !important;
+  min-height: 650px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  border: 2px solid #13305b;
+}
+  
+.profile-card .card-body {
+  padding: 2rem;
+  color: #ffffff;
+  width: 550px;
+  height: 100%;
+}
+
+.profile-card .form-label {
+  text-align: left;
+  color: #e0e0e0 !important;
+  font-weight: 500;
+  font-size: 22px;
+}
+
+.profile-card .text-white {
+  text-align: left;
+}
+
+.profile-card .row > .col-md-6 {
+  padding: 0.75rem;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.profile-card .form-control,
+.profile-card .form-select,
+.profile-card .password-group input {
+  background-color: transparent;
+  border: 2px solid #445b7c;
+  border-radius: 6px;
+  color: #ffffff;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+.profile-card .form-control:focus,
+.profile-card .form-select:focus {
+  border-color: #66a3ff;
+  box-shadow: 0 0 8px rgba(102,163,255,0.5);
+}
+
+.profile-card .form-select {
+  background-color: transparent;
+  color: #fff;
+}
+
+.profile-card .form-select option {
+  background: #0b1f3e !important;
+  color: #fff;
+}
+
+.profile-card .form-select option:checked {
+  background: rgba(102,163,255,0.2);
+  color: #fff;
+}
+
+#dobDisplay,
+#dobInput {
+  width: 100%;
+}
+
+#dobInput {
+  padding: 0.5rem 0.75rem;
+}
+  
+.gender-toggle {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.gender-toggle button {
+  border: 2px solid #445b7c;
+  border-radius: 6px;
+  background: transparent;
+  color: #fff;
+  flex: 1;
+}
+
+.gender-toggle button.active {
+  background-color: #66a3ff;
+  border-color: #66a3ff;
+  color: #0b1f3e;
+}
+
+/* ---------- Password Toggle Icon ---------- */
+.password-group {
+  position: relative;
+}
+
+.password-group input {
+  padding-right: 2.5rem; 
+}
+
+.password-group .toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 1.1rem;
+}
+
+/* ---------- Buttons ---------- */
+.profile-card .btn-outline-light {
+  border: 2px solid #66a3ff;
+  color: white;
+  width: 200px;
+}
+
+.profile-card .btn-outline-light:hover {
+  background-color: #66a3ff;
+  color: #0b1f3e;
+}
+
+.profile-card .btn-success {
+  background-color: #dc3545 !important;
+  border: none !important;
+  color: #fff !important;
+}
+.profile-card .btn-secondary {
+  background-color: #6c757d !important;
+  border: none !important;
+  color: #fff !important;
+}
+
+/* ---------- Validation States ---------- */
+.profile-card input:invalid,
+.profile-card select:invalid {
+  border-color: #dc3545 !important;
+}
+.profile-card input:valid,
+.profile-card select:valid {
+  border-color: #28a745 !important;
+}
+
+#profileForm .d-grid {
+  justify-content: center;
+}
+
+#profileForm .d-grid button {
+  display: inline-block;
+  width: 200px;
+}
+
+.password-group .form-control,
+#profileForm input[type="password"] {
+  color: #ffffff !important;
+  background: transparent;
+  border-color: rgba(255,255,255,0.15);
+}
+
+.password-group .form-control::placeholder {
+  color: rgba(255,255,255,0.7) !important;
+}
+
+.input-group .btn {
+  color: #ffffff;
+}

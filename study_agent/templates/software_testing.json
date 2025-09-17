@@ -1,0 +1,49 @@
+{
+  "subject": "Software Testing",
+  "topics": {
+    "topic-1-intro-to-testing": {
+      "title": "Topic 1: Introduction to testing",
+      "description": "Basic motivation and principles of testing, test life cycle, skills",
+      "templates": [
+        {
+          "type": "template_saved",
+          "created_at": "2025-08-15T07:44:18Z",
+          "template": {
+            "course": "Software Engineering",
+            "topic": "Topic 1: Introduction to testing",
+            "mode": "direct",
+            "prompt": null,
+            "metadata": {
+              "education_level": "undergraduate",
+              "prior_knowledge": "basic programming",
+              "learning_goals": "Understand testing",
+              "note_level": 2,
+              "example_count": 2,
+              "preferred_format": "text"
+            }
+          }
+        }
+      ],
+      "conversations": [
+        {
+          "type": "conversation",
+          "created_at": "2025-08-15T07:46:07Z",
+          "user_id": 3,
+          "course": "Software Engineering",
+          "topic": "Topic 1: Introduction to testing",
+          "mode": "direct",
+          "metadata": { "note_level": 3, "example_count": 0, "education_level": "undergraduate" },
+          "user_prompt": "Generate study notes for the topic 'Topic 1: Introduction of software testing' ...",
+          "ai_response": "**1) Overview** ...",
+          "files": []
+        }
+      ]
+    },
+    "topic-4-static-testing": {
+      "title": "Topic 4: Static Testing",
+      "description": "Background to static techniques",
+      "templates": [],
+      "conversations": []
+    }
+  }
+}

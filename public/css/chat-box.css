@@ -1,0 +1,246 @@
+.input-area {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 800px;
+    background-color: #121212;
+    padding: 5px;
+    border: 1px solid #444;
+    border-radius: 8px;
+    box-sizing: border-box;
+    z-index: 100;
+}
+
+.input-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 40px 40px;
+    gap: 0;
+    align-items: center;
+}
+
+.prompt-input {
+    background: transparent !important;
+    border: 1px solid #444;
+    color: #ffffff !important;
+    padding: 8px;
+    width: 100%;
+    resize: vertical;
+    min-height: 1.5em !important;
+    max-height: 120px;
+    overflow-y: auto;
+}
+
+.prompt-input::-webkit-scrollbar {
+    width: 8px;
+}
+
+.prompt-input::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.prompt-input::-webkit-scrollbar-thumb {
+    background: grey;
+    border-radius: 4px;
+}
+
+.button-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-upload,
+.btn-send {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #444;
+    border-radius: 50%;
+    padding: 0;
+    margin: 3px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-upload:hover,
+.btn-send:hover {
+    background-color: #e0e0e0;
+}
+
+.btn-upload i,
+.btn-send i {
+    font-size: 1rem;
+}
+
+/* Chat Bubble */
+.chat-bubble.user .bubble-actions {
+    position: absolute;
+    top: -21px;
+    right: -8px;
+    display: flex !important;
+    gap: 4px;
+}
+  
+.chat-bubble.system .bubble-actions {
+    display: none;
+}
+
+.chat-bubble.system:hover .bubble-actions {
+    display: flex;
+}
+
+/* Chat Messages */
+.chat-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #121212;
+}
+
+.chat-messages {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    overflow-y: auto;
+    height: calc(100vh - 180px);
+}
+
+.chat-bubble {
+    max-width: 70%;
+    padding: 10px 15px;
+    margin-bottom: 16px;
+    border-radius: 12px;
+    line-height: 1.4;
+    color: #ffffff;
+    word-wrap: break-word;
+    align-self: flex-start;
+    position: relative;
+}
+
+.chat-bubble.user {
+    background-color: #0a84ff;
+    margin-left: auto;
+    text-align: right;
+    border-top-right-radius: 0;
+    align-self: flex-end;
+}
+
+.chat-bubble.system {
+    background-color: #2c2c2c;
+    margin-right: auto;
+    text-align: left;
+    border-top-left-radius: 0;
+    position: relative;
+    margin-top: 24px;
+}
+
+.bubble-actions {
+    position: absolute;
+    top: -28px;
+    right: -8px;
+    display: flex;
+    gap: 8px;
+    z-index: 2;
+}
+
+.chat-bubble.system:hover .bubble-actions {
+    display: flex;
+}
+
+.btn-action {
+    background: #ffffff;
+    border: none;
+    color: #000000;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 6px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.btn-action:hover {
+    background-color: #f0f0f0;
+    transform: scale(1.05);
+}
+
+.chat-bubble.system:hover .bubble-actions {
+    display: flex;
+}
+
+.bubble-content {
+    padding-top: 8px;
+    white-space: pre-wrap;
+}
+
+.bubble-editor {
+    position: relative;
+    padding: 8px;
+    background-color: #2c2c2c;
+    border-radius: 12px;
+    box-sizing: border-box;
+}
+
+.bubble-editor-text {
+    background: #1e1e1e;
+    border: 1px solid #444;
+    color: #fff;
+    padding: 8px;
+    border-radius: 6px;
+    resize: vertical;
+}
+
+.bubble-editor-actions {
+    margin-top: 8px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.btn-editor-save,
+.btn-editor-cancel {
+    background: transparent;
+    border: 1px solid #888;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-editor-save:hover,
+.btn-editor-cancel:hover {
+    background-color: #444;
+    border-color: #666;
+}
+
+#chatModal .modal-content {
+  background-color: #000 !important;
+  color: #fff;
+}
+
+#chatModal .form-label {
+  text-align: left !important;
+  color: #fff;
+}
+
+#chatModal .form-control,
+#chatModal .form-select {
+  background-color: #000;
+  color: #fff;
+  border-color: #444;
+}
+
+#chatModal .form-select {
+  background-image: url("data:image/svg+xml,…");
+}

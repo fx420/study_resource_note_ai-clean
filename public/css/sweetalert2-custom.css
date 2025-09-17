@@ -1,0 +1,69 @@
+/* make the popup itself black + white text */
+.swal2-popup {
+    background: #121212 !important;
+    color: #fff !important;
+    overflow-x: hidden !important;
+    scrollbar-width: none !important;
+}
+
+.swal2-html-container {
+    white-space: normal !important;
+    overflow-x: hidden !important;
+}
+
+.swal2-popup::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.swal2-popup .swal2-input {
+    background: #121212 !important;
+    color: #fff !important;
+    border: 1px solid #444 !important;
+    width: 100% !important;
+    box-sizing: border-box;
+    margin-bottom: 1rem !important;
+    margin-left: auto !important;
+    margin-top: auto !important;
+}
+
+  /* style all swal2-inputs (both <input> and <select>) */
+.swal2-popup .swal2-html-container select.swal2-input {
+    background: #121212 !important;
+    color: #fff !important;
+    border: 1px solid #444 !important;
+    width: 100% !important;
+    box-sizing: border-box;
+    margin-bottom: 1rem !important;
+    padding-left: 0.75rem !important;
+}
+  
+  /* each option in the selects */
+.swal2-popup .swal2-html-container select.swal2-input option {
+    background: #121212 !important;
+    color: #fff !important;
+}
+  
+  /* hover state for the options */
+.swal2-popup .swal2-html-container select.swal2-input option:hover {
+    background: #333 !important;
+    color: #ccc !important;
+}
+  
+  /* the radio‐group labels (“Direct note” / “Custom prompt”) */
+.swal2-popup .swal2-html-container input[type="radio"] + span,
+.swal2-popup .swal2-html-container label {
+    color: #fff !important;
+}
+  
+  /* hover for those labels */
+.swal2-popup .swal2-html-container label:hover {
+    color: #ccc !important;
+}
+  
+  /* make sure the confirm (“Start”) button stands out */
+.swal2-popup .swal2-confirm {
+    background-color: #dc3545 !important;
+    color: #fff !important;
+    border: none !important;
+}

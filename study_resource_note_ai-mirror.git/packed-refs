@@ -1,0 +1,14 @@
+# pack-refs with: peeled fully-peeled sorted 
+ccde3a7fdad92756762de94ef1c7cfecacfb04c4 refs/heads/admin
+a1441aa1b82edc0b65cf23ed843d9ff5ead13a08 refs/heads/ai
+ea35d559836d848bccff1ca5e6e51e931176b8a3 refs/heads/button
+ea35d559836d848bccff1ca5e6e51e931176b8a3 refs/heads/clean-button
+ea35d559836d848bccff1ca5e6e51e931176b8a3 refs/heads/cleaned
+2206832ba40336096b7fb3a374966e4fc47396a5 refs/heads/key
+f3606168d0d708fba3f8f0f14ee8dfc7f65adf7a refs/heads/key-clean
+2206832ba40336096b7fb3a374966e4fc47396a5 refs/heads/master
+ccde3a7fdad92756762de94ef1c7cfecacfb04c4 refs/remotes/origin/admin
+a1441aa1b82edc0b65cf23ed843d9ff5ead13a08 refs/remotes/origin/ai
+42516c65929b46028239e6eab18a790ee44c01f7 refs/remotes/origin/key-clean
+42516c65929b46028239e6eab18a790ee44c01f7 refs/remotes/origin/master
+87fdb224a1f05d2f746bab69f33deca547a283d2 refs/stash

@@ -1,0 +1,17 @@
+.sidebar {
+    transition: transform 0.3s ease;
+    transform: translateX(-100%);
+}
+
+.sidebar.open {
+    transform: translateX(0);
+}
+
+.offcanvas {
+    width: 250px;
+}
+
+.disabled {
+    pointer-events: none;
+    opacity: 0.6;
+}

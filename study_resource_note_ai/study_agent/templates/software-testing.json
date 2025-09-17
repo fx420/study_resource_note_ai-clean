@@ -1,0 +1,182 @@
+{
+    "subject": "Software Testing",
+    "topics": {
+        "topic-1-introduction-of-software-testing": {
+            "title": "Topic 1: Introduction of software testing",
+            "description": "",
+            "templates": [
+                {
+                    "type": "template_saved",
+                    "created_at": "2025-08-13 09:02:26",
+                    "template": {
+                        "course": "Software Engineering",
+                        "topic": "Topic 1: Introduction of software testing",
+                        "mode": "direct",
+                        "prompt": null,
+                        "metadata": {
+                            "education_level": "undergraduate",
+                            "prior_knowledge": "Basic",
+                            "learning_goals": "Understand Concept",
+                            "note_level": "3",
+                            "example_count": "2",
+                            "preferred_format": "text"
+                        }
+                    }
+                }
+            ],
+            "conversations": [
+                {
+                    "type": "conversation",
+                    "created_at": "2025-08-13 09:02:53",
+                    "user_id": 3,
+                    "course": "Software Engineering",
+                    "topic": "Topic 1: Introduction of software testing",
+                    "mode": "direct",
+                    "metadata": {
+                        "education_level": "undergraduate",
+                        "prior_knowledge": "Basic",
+                        "learning_goals": "Understand Concept",
+                        "note_level": "3",
+                        "example_count": "2",
+                        "preferred_format": "text"
+                    },
+                    "user_prompt": "Generate study notes for the topic 'Topic 1: Introduction of software testing' in Software Engineering. Use the following metadata: Education level: undergraduate; Prior knowledge: Basic; Learning goal: Understand Concept; Difficulty level: 3; Examples: 2; Format: text. Output structure: 1) Overview (paragraph), 2) Key Points (point form), 3) Examples (point form), 4) Summary (paragraph).",
+                    "ai_response": "**1) Overview**  \nSoftware testing is a critical process in software engineering that evaluates a system or application to identify defects, ensure quality, and verify that it meets specified requirements. It involves executing software under controlled conditions to uncover errors, validate functionality, and improve reliability. Testing is integral to the Software Development Life Cycle (SDLC), helping teams deliver robust, user-friendly products while reducing risks of failures in production.\n\n**2) Key Points**  \n- **Purpose**: Detect defects, validate functionality, ensure compliance with requirements, and improve software quality.  \n- **Testing Levels**:  \n  - **Unit Testing**: Tests individual components (e.g., functions, classes).  \n  - **Integration Testing**: Checks interactions between integrated modules.  \n  - **System Testing**: Validates the entire system against requirements.  \n  - **Acceptance Testing**: Ensures the software meets user expectations.  \n- **Testing Types**:  \n  - **Functional Testing**: Verifies features (e.g., login functionality).  \n  - **Non-Functional Testing**: Evaluates performance, security, usability.  \n- **Manual vs. Automated Testing**:  \n  - Manual testing is human-driven and flexible.  \n  - Automated testing uses scripts for repetitive or complex scenarios.  \n- **Principles**:  \n  - Testing shows the presence of defects, not their absence.  \n  - Early testing reduces costs and effort.  \n  - Exhaustive testing is impossible (prioritize based on risk).  \n\n**3) Examples**  \n- **Example 1 (Functional Testing)**:  \n  Testing a login feature by entering valid\/invalid credentials to ensure correct authentication and error messages.  \n- **Example 2 (Non-Functional Testing)**:  \n  Load testing an e-commerce website during peak traffic to assess response times and server stability.  \n\n**4) Summary**  \nSoftware testing is a systematic process to ensure software quality by identifying defects and validating functionality. It operates at multiple levels (unit to acceptance) and includes functional and non-functional approaches. While manual testing offers flexibility, automation enhances efficiency for repetitive tasks. By adhering to principles like early testing and risk prioritization, teams mitigate errors and deliver reliable software aligned with user needs.",
+                    "files": []
+                },
+                {
+                    "type": "conversation",
+                    "created_at": "2025-08-15 07:46:07",
+                    "user_id": 3,
+                    "course": "Software Engineering",
+                    "topic": "Topic 1: Introduction of software testing",
+                    "mode": "direct",
+                    "metadata": {
+                        "education_level": "undergraduate",
+                        "prior_knowledge": "Basic",
+                        "learning_goals": "Understand Concept",
+                        "note_level": "3",
+                        "example_count": "0",
+                        "preferred_format": "text"
+                    },
+                    "user_prompt": "Generate study notes for the topic 'Topic 1: Introduction of software testing' in Software Engineering. Use the following metadata: Education level: undergraduate; Prior knowledge: Basic; Learning goal: Understand Concept; Difficulty level: 3; Examples: 0; Format: text. Output structure: 1) Overview (paragraph), 2) Key Points (point form), 3) Examples (point form), 4) Summary (paragraph).",
+                    "ai_response": "**1) Overview**  \nSoftware testing is a systematic process in software engineering that evaluates a system or component to identify defects, verify requirements, and ensure quality before deployment. It is a critical phase of the Software Development Life Cycle (SDLC) that aims to reduce risks, improve user satisfaction, and validate that the software meets specified criteria. Testing helps uncover errors in functionality, performance, security, and usability, ensuring the final product aligns with stakeholder expectations.\n\n**2) Key Points**  \n- **Definition**: Process of executing software to find defects and assess quality.  \n- **Objectives**:  \n  - Identify bugs and errors.  \n  - Validate requirements and specifications.  \n  - Ensure reliability, usability, and performance.  \n- **Types of Testing**:  \n  - **Unit Testing**: Tests individual components (e.g., functions, classes).  \n  - **Integration Testing**: Validates interactions between integrated modules.  \n  - **System Testing**: Evaluates the entire system against requirements.  \n  - **Acceptance Testing**: Confirms readiness for delivery (user\/client approval).  \n- **Testing Techniques**:  \n  - **Black-Box Testing**: Focuses on inputs\/outputs without internal code knowledge.  \n  - **White-Box Testing**: Examines internal code structure and logic.  \n- **Testing Process**:  \n  - Planning → Design → Execution → Reporting → Closure.  \n- **Importance**:  \n  - Reduces post-deployment failures.  \n  - Enhances user trust and product credibility.  \n- **Challenges**:  \n  - Time and resource constraints.  \n  - Incomplete or changing requirements.  \n\n**3) Examples**  \n*(No specific examples provided as per request. Practical scenarios will be covered in applied sessions.)*  \n\n**4) Summary**  \nSoftware testing is a foundational practice in software engineering that ensures the delivery of reliable, high-quality products. By systematically identifying defects and validating requirements, it mitigates risks and aligns the final product with user needs. Through structured phases like unit, integration, system, and acceptance testing, teams address errors at every development stage. While challenges like resource limitations exist, effective testing remains vital for minimizing failures and fostering trust in software solutions.",
+                    "files": []
+                }
+            ]
+        },
+        "intro-testing": {
+            "title": "Intro Testing",
+            "description": "",
+            "templates": [
+                {
+                    "type": "template_saved",
+                    "created_at": "2025-08-15 07:44:18",
+                    "template": {
+                        "course": "Software Engineering",
+                        "topic": "Intro Testing",
+                        "mode": "direct",
+                        "prompt": null,
+                        "metadata": {
+                            "education_level": "undergraduate",
+                            "prior_knowledge": "basic programming",
+                            "learning_goals": "Understand testing",
+                            "note_level": 2,
+                            "example_count": 2,
+                            "preferred_format": "text"
+                        }
+                    }
+                }
+            ],
+            "conversations": [
+                {
+                    "type": "conversation",
+                    "created_at": "2025-08-15 07:44:18",
+                    "user_id": null,
+                    "course": "Software Engineering",
+                    "topic": "Intro Testing",
+                    "mode": "direct",
+                    "metadata": {
+                        "education_level": "undergraduate",
+                        "prior_knowledge": "basic programming",
+                        "learning_goals": "Understand testing",
+                        "note_level": 2,
+                        "example_count": 2,
+                        "preferred_format": "text"
+                    },
+                    "user_prompt": "DEBUG: sample user prompt",
+                    "ai_response": "DEBUG: sample AI response\n\n- point 1\n- point 2",
+                    "files": []
+                },
+                {
+                    "type": "conversation",
+                    "created_at": "2025-08-15 08:01:44",
+                    "user_id": null,
+                    "course": "Software Engineering",
+                    "topic": "Intro Testing",
+                    "mode": "direct",
+                    "metadata": {
+                        "education_level": "undergraduate",
+                        "prior_knowledge": "basic programming",
+                        "learning_goals": "Understand testing",
+                        "note_level": 2,
+                        "example_count": 2,
+                        "preferred_format": "text"
+                    },
+                    "user_prompt": "DEBUG: sample user prompt",
+                    "ai_response": "DEBUG: sample AI response\n\n- point 1\n- point 2",
+                    "files": []
+                }
+            ]
+        },
+        "topic-1-introduction-of-software-testing-topic-2-mock-test": {
+            "title": "Topic 1: Introduction of software testing, Topic 2: Mock Test:",
+            "description": "",
+            "templates": [],
+            "conversations": [
+                {
+                    "type": "conversation",
+                    "created_at": "2025-09-02 11:08:55",
+                    "user_id": 3,
+                    "course": "Software Engineering",
+                    "topic": "Topic 1: Introduction of software testing, Topic 2: Mock Test:",
+                    "mode": "direct",
+                    "metadata": {
+                        "education_level": "postgraduate",
+                        "prior_knowledge": "Basic",
+                        "learning_goals": "Understand Concept",
+                        "note_level": 3,
+                        "example_count": 1,
+                        "preferred_format": "text"
+                    },
+                    "text_prompt": ".",
+                    "file_prompt": null,
+                    "user_prompt": "Generate study notes for the topic 'Topic 1: Introduction of software testing, Topic 2: Mock Test:' in Software Engineering. Use the following metadata: Education level: postgraduate; Prior knowledge: Basic; Learning goal: Understand Concept; Difficulty level: 3; Examples: 1; Format: text. Output structure: 1) Overview (paragraph), 2) Key Points (point form), 3) Examples (point form), 4) Summary (paragraph).",
+                    "ai_response": "### Overview\nSoftware testing is a critical phase in the software development lifecycle that ensures the quality, functionality, and reliability of software products. It involves evaluating a system or its components to find whether it meets the specified requirements or not. With the rapid advancement of technology, the complexity of software systems has increased, necessitating rigorous testing methodologies. Understanding the role of software testing is essential for software engineers to ensure that software performs as intended and meets user expectations. This introduction provides foundational knowledge of software testing principles, types, and methodologies, along with a mock test to evaluate understanding.\n\n### Key Points\n- **Definition**: Software testing is the process of evaluating and verifying that a software application or product meets the specified requirements and functions correctly.\n- **Purpose**: The main goals of software testing are to identify defects, ensure quality, enhance reliability, and validate performance.\n- **Types of Testing**:\n  - **Functional Testing**: Verifies that the software functions as intended.\n  - **Non-Functional Testing**: Assesses performance, usability, reliability, etc.\n  - **Manual vs. Automated Testing**: Manual testing involves human intervention, while automated testing uses software tools.\n- **Testing Levels**:\n  - **Unit Testing**: Tests individual components.\n  - **Integration Testing**: Tests interactions between components.\n  - **System Testing**: Tests the complete software as a whole.\n  - **Acceptance Testing**: Conducted to determine if the system meets acceptance criteria.\n- **Testing Life Cycle**: Involves planning, design, execution, and closure stages.\n- **Best Practices**: Include clear documentation, early testing in the development process, and regular review and updates based on feedback.\n\n### Examples\n- An example of **Functional Testing**: Testing a login feature to ensure that users can successfully log in with correct credentials and receive an error message with incorrect credentials.\n- An example of a **Mock Test**: A practice test comprising various types of questions (e.g., multiple-choice, true\/false) covering the concepts of software testing, such as identifying the difference between manual and automated testing, or the phases of the testing life cycle.\n\n### Summary\nIn conclusion, software testing is an integral part of the software development process aimed at ensuring that products are fit for use. It encompasses various types of testing and levels, each serving a distinct purpose in identifying and correcting defects. A firm understanding of software testing principles not only improves software quality but also enhances user satisfaction and minimization of risks. Engaging in exercises such as mock tests can further solidify understanding of fundamental concepts, preparing software engineers for real-world applications of testing practices.",
+                    "files": []
+                },
+                {
+                    "type": "conversation",
+                    "created_at": "2025-09-02 11:22:32",
+                    "user_id": 3,
+                    "course": "Software Engineering",
+                    "topic": "Topic 1: Introduction of software testing, Topic 2: Mock Test:",
+                    "mode": "direct",
+                    "metadata": {
+                        "education_level": "undergraduate",
+                        "prior_knowledge": "Basic",
+                        "learning_goals": "Understand Concept",
+                        "note_level": 3,
+                        "example_count": 1,
+                        "preferred_format": "text"
+                    },
+                    "text_prompt": "Topic 1: Introduction of software testing, Topic 2: Mock Test:",
+                    "file_prompt": null,
+                    "user_prompt": "Generate study notes for the topic 'Topic 1: Introduction of software testing, Topic 2: Mock Test:' in Software Engineering. Use the following metadata: Education level: undergraduate; Prior knowledge: Basic; Learning goal: Understand Concept; Difficulty level: 3; Examples: 1; Format: text. Output structure: 1) Overview (paragraph), 2) Key Points (point form), 3) Examples (point form), 4) Summary (paragraph).\n\n# Similar examples found in the subject (top 1):\n1. (sim=0.9203) ### Overview\nSoftware testing is a critical phase in the software development lifecycle that ensures the quality, functionality, and reliability of software products. It involves evaluating a system or its components to find whether it meets the spec\n\nPlease use these examples as reference when generating the notes (do not copy verbatim).",
+                    "ai_response": "### Overview\nSoftware testing is an essential process in the software engineering discipline that aims to verify and validate that software products function correctly, meet user requirements, and are free of defects. By systematically assessing software applications through a variety of techniques and methods, testing helps to identify issues and improve the overall quality of the product. This phase occurs at different stages throughout the software development lifecycle, ensuring that any potential problems are caught early and managed effectively, ultimately contributing to the reliability and satisfaction of users.\n\n### Key Points\n- **Definition of Software Testing**: The process of evaluating software to detect discrepancies between actual and expected outcomes.\n- **Objectives**: Ensure functionality, reliability, performance, and security of software.\n- **Types of Testing**: Includes functional testing, non-functional testing, unit testing, integration testing, system testing, and user acceptance testing (UAT).\n- **Phases of Testing**: Involves test planning, test design, test execution, and test closure.\n- **Testing Techniques**: Can be manual or automated, with methodologies such as black-box testing, white-box testing, and gray-box testing.\n- **Importance**: Identifies defects before deployment, reduces maintenance costs, enhances user satisfaction, and ensures compliance with requirements.\n- **Roles in Testing**: Includes testers, QA engineers, and developers, each having distinct responsibilities.\n\n### Examples\n- **Example of Functional Testing**: A web application that allows users to log in must be tested to ensure that valid credentials grant access, while invalid credentials prevent entry, thus confirming the functionality aligns with user expectations.\n\n### Summary\nIn summary, software testing is a vital component of software development that assures the functionality and quality of software products. By implementing diverse testing approaches and methodologies, teams can identify and rectify defects early in the development process. Understanding the different types of testing and their respective roles is crucial for any software engineering professional. With effective testing practices in place, organizations can deliver reliable and user-friendly software, ultimately leading to improved customer satisfaction and reduced lifecycle costs.",
+                    "files": []
+                }
+            ]
+        }
+    }
+}
