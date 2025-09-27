@@ -20,12 +20,12 @@ class VectorStore
         ?string $snippet = null
     ): int {
         $payload = [
-            'subject'    => $subject,
-            'topic'      => $topic,
+            'subject' => $subject,
+            'topic' => $topic,
             'entry_type' => $entryType,
-            'entry_ref'  => $entryRef,
-            'vector'     => json_encode(array_values(array_map('floatval', $vector)), JSON_UNESCAPED_UNICODE),
-            'snippet'    => $snippet,
+            'entry_ref' => $entryRef,
+            'vector' => json_encode(array_values(array_map('floatval', $vector)), JSON_UNESCAPED_UNICODE),
+            'snippet' => $snippet,
             'created_at' => now(),
             'updated_at' => now(),
         ];
@@ -88,7 +88,7 @@ class VectorStore
                 );
 
                 $results[] = [
-                    'row'   => $rowArr,
+                    'row' => $rowArr,
                     'score' => $score,
                 ];
             }

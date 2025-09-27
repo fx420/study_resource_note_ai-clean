@@ -221,17 +221,24 @@
 
 @section('content')
 <div class="container py-4">
-    <h3 class="mb-4">{{ $session->title }}</h3>
+    <div class="d-flex justify-content-between align-items-start mb-3">
+        <h3 class="mb-0">{{ $session->title }}</h3>
+
+        <!-- <div>
+            <button type="button" class="btn btn-outline-secondary btn-sm regenerate-btn" data-session-id="{{ $session->id }}" title="Regenerate AI response">
+                <i class="fas fa-sync-alt"></i> Regenerate
+            </button>
+        </div> -->
+    </div>
 
     <div id="chatMessages" class="chat-messages mb-3" aria-live="polite" data-session-id="{{ $session->id }}">
         @foreach($session->messages as $msg)
             <div class="chat-bubble {{ $msg->sender }}">
-                {{-- bubble content: preserve newlines, escape HTML --}}
                 <div class="bubble-content">{!! (e($msg->message)) !!}</div>
 
                 @if($msg->sender === 'system')
                     <div class="bubble-actions">
-                        <button type="button" class="btn btn-sm btn-outline-light download-btn" title="Download reply">
+                        <button type="button" class="btn btn-sm btn-outline-light download-btn" title="Download reply" data-message-id="{{ $msg->id }}">
                             <i class="fas fa-download"></i>
                         </button>
 
@@ -290,7 +297,7 @@
 </div>
 
 {{-- Fixed input at bottom --}}
-<div class="input-area">
+<!-- <div class="input-area">
     <form method="POST" action="{{ route('chat.session.submit', $session) }}" id="chatForm" enctype="multipart/form-data">
         @csrf
         <div class="input-wrapper">
@@ -305,7 +312,7 @@
             <button type="submit" class="btn btn-primary btn-send"><i class="fas fa-paper-plane"></i></button>
         </div>
     </form>
-</div>
+</div> -->
 @endsection
 
 @section('scripts')
@@ -782,6 +789,84 @@
                     submitBtn.innerHTML = submitBtn.dataset.prev || 'Generate';
                 }
             }
+        });
+
+        document.querySelectorAll('.regenerate-btn').forEach(btn => {
+            btn.addEventListener('click', async (ev) => {
+                ev.preventDefault();
+                const btnEl = ev.currentTarget;
+                const sessionId = btnEl.dataset.sessionId || SESSION_ID || document.getElementById('chatMessages')?.dataset?.sessionId;
+
+                if (typeof window.logEvent === 'function') {
+                try { window.logEvent('regenerate', { session_id: sessionId }); } catch (e) {}
+                }
+
+                const orig = btnEl.innerHTML;
+                btnEl.disabled = true;
+                btnEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Regenerating…';
+
+                try {
+                    const csrf = document.querySelector('meta[name="csrf-token"]')?.content || '';
+                    const res = await fetch(`/chat/${sessionId}/regenerate`, {
+                        method: 'POST',
+                        credentials: 'same-origin',
+                        headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrf,
+                        'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({ session_id: sessionId })
+                    });
+
+                    if (!res.ok) {
+                        const txt = await res.text().catch(()=>null);
+                        console.error('Regenerate failed', res.status, txt);
+                        alert('Regenerate failed. Check console for details.');
+                        return;
+                    }
+
+                    const json = await res.json();
+
+                    if (json && json.reply) {
+                        const messagesEl = document.getElementById('chatMessages');
+                        if (messagesEl) {
+                            const b = document.createElement('div');
+                            b.className = 'chat-bubble system';
+                            const formatted = parseAiMessageToHtml(String(json.reply));
+                            b.innerHTML = `<div class="bubble-content">${formatted || nl2brSafe(json.reply)}</div>
+                                        <div class="bubble-actions">
+                                            <button type="button" class="download-btn btn btn-sm btn-outline-light" title="Download reply"><i class="fas fa-download"></i></button>
+                                        </div>`;
+
+                            messagesEl.appendChild(b);
+
+                            const msgId = json.message_id || null;
+                            if (msgId) {
+                                const downloadBtn = b.querySelector('.download-btn');
+                                if (downloadBtn) {
+                                    downloadBtn.setAttribute('data-message-id', msgId);
+                                }
+                            }
+
+                            if (typeof attachDownloadHandlerToButton === 'function') {
+                                attachDownloadHandlerToButton(b.querySelector('.download-btn'));
+                            } else if (typeof window.attachDownloadHandlerToButton === 'function') {
+                                window.attachDownloadHandlerToButton(b.querySelector('.download-btn'));
+                            }
+
+                            processAiBubbles(b);
+                            b.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        }
+                    }
+
+                } catch (err) {
+                    console.error('Regenerate error', err);
+                    alert('Network error while regenerating.');
+                } finally {
+                    btnEl.disabled = false;
+                    btnEl.innerHTML = orig;
+                }
+            });
         });
     });
 </script>

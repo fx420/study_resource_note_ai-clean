@@ -90,6 +90,9 @@
     </button>
 
     <input type="file" name="file" id="fileInput" class="d-none" accept=".txt,.pdf,.docx">
+    <input type="hidden" name="file_path" id="filePromptInput" value="">
+    <input type="hidden" name="file_original_name" id="fileOriginalNameInput" value="">
+    <input type="hidden" name="file_snippet" id="fileSnippetInput" value="">
   </div>
   
   <div class="d-flex align-items-center gap-2 mt-2">

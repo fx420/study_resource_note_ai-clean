@@ -15,19 +15,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\InteractionEventController;
+use App\Http\Controllers\PrivacyController;
 
+/* ---------------------- INDEX ---------------------- */
 Route::middleware('auth')->get('/', function () {
     return view('index');
 })->name('index');
 
 /* ---------------------- AUTHENTICATION ---------------------- */
-Route::get('/login',    [AuthController::class,'showLogin'])->name('login');
-Route::post('/login',   [AuthController::class,'login']);
-
+Route::get('/login', [AuthController::class,'showLogin'])->name('login');
+Route::post('/login', [AuthController::class,'login']);
 Route::get('/register', [AuthController::class,'showRegister'])->name('register');
-Route::post('/register',[AuthController::class,'register']);
-
-Route::post('/logout',  [AuthController::class,'logout'])->name('logout');
+Route::post('/register', [AuthController::class,'register']);
+Route::post('/logout', [AuthController::class,'logout'])->name('logout');
 
 /* ---------------------- PROFILE CONTROLLER ---------------------- */
 Route::middleware(['auth'])->group(function () {
@@ -88,6 +89,18 @@ Route::middleware(['auth','can:admin'])->prefix('admin')->name('admin.')->group(
     Route::resource('logs', LogController::class)->only(['index','show','destroy']);
 });
 
+/* ---------------------- INTERACTION EVENT CONTROLLER ---------------------- */
+Route::post('/api/interaction/batch', [InteractionEventController::class, 'storeBatch'])
+     ->middleware('auth')
+     ->name('interaction.batch');
+
+/* ---------------------- PRIVACY CONTROLLER ---------------------- */
+Route::post('/privacy/embeddings/remove', [PrivacyController::class, 'removeEmbeddings'])
+    ->middleware('auth')->name('privacy.remove');
+
+Route::post('/chat/{session}/regenerate', [ChatController::class, 'regenerate'])
+    ->middleware('auth')
+    ->name('chat.regenerate');
 
 /* ---------------------- DEBUG CONTROLLER ---------------------- */
 Route::get('/debug/inspect-subject-json', function (Request $r) {

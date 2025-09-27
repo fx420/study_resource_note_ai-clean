@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -53,14 +54,16 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validated = $request->validate([
-            'username'              => ['required','string','max:255','unique:users'],
-            'email'                 => ['required','email','max:255','unique:users'],
-            'password'              => ['required','confirmed','min:6'],
+            'username' => ['required','string','max:255','unique:users'],
+            'email' => ['required','email','max:255','unique:users'],
+            'password' => ['required','confirmed','min:6'],
         ]);
-    
+
+        Log::info('Register attempt', $validated);
+
         $user = User::create([
             'username' => $validated['username'],
-            'email'    => $validated['email'],
+            'email' => $validated['email'],
             'password' => bcrypt($validated['password']),
         ]);
     

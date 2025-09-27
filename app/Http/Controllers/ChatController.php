@@ -15,6 +15,7 @@ use App\Models\PromptTemplate;
 use App\Services\ChatService;
 use App\Helpers\JsonFileLockStore;
 use App\Models\Question;
+use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
 {
@@ -139,7 +140,10 @@ class ChatController extends Controller
             'content_format' => 'required|string|in:text,bullet,table',
             'mode' => 'required|string|in:direct,prompt',
             'prompt' => 'nullable|string|max:2000',
-            'file' => 'nullable|file|mimes:txt,pdf,docx,jpg,jpeg,png|max:40960',
+            'file' => 'nullable|file|mimes:txt,pdf,docx,jpg,jpeg,png|max:204800',
+            'file_prompt' => 'nullable|string|max:204800',
+            'file_snippet' => 'nullable|string|max:204800',
+            'file_original_name' => 'nullable|string|max:255',
         ];
 
         $validator = Validator::make($r->all(), $rules);
@@ -164,6 +168,60 @@ class ChatController extends Controller
         $originalFileName = null;
         $filePaths = [];
         $fileSnippet = null;
+
+        $clientFilePath = trim((string) $r->input('file_path', ''));
+        $clientSnippet = trim((string) $r->input('file_snippet', ''));
+        $clientOrigName = trim((string) $r->input('file_original_name', ''));
+
+        if ($clientSnippet !== '') {
+            $fileSnippet = mb_substr($clientSnippet, 0, 200000);
+            $storedFilePath = $clientFilePath ?: null;
+            $originalFileName = $clientOrigName ?: null;
+            if ($storedFilePath) $filePaths[] = $storedFilePath;
+        }
+
+        if ($fileSnippet === null && $clientFilePath !== '') {
+            $storedFilePath = $clientFilePath;
+            $originalFileName = $clientOrigName ?: null;
+
+            $relative = preg_replace('#^/storage/#', '', ltrim($storedFilePath, '/'));
+            $localFull = storage_path('app/public/' . $relative);
+
+            if (!file_exists($localFull)) {
+                $alt = storage_path('app/public/' . ltrim($storedFilePath, '/'));
+                if (file_exists($alt)) $localFull = $alt;
+            }
+
+            if (file_exists($localFull) && is_readable($localFull)) {
+                try {
+                    $raw = $this->extractTextFromFile($localFull);
+                    $clean = $this->safeUtf8($raw, 2000);
+                    $fileSnippet = $this->isMostlyPrintableText($clean) ? $clean : null;
+                    $filePaths[] = $localFull;
+                } catch (\Throwable $e) {
+                    Log::warning("[createSession] read client file_path failed: " . $e->getMessage());
+                    $fileSnippet = null;
+                }
+            } else {
+                Log::warning("[createSession] file_path provided but file not found/readable: {$localFull}");
+            }
+        }
+
+        if ($fileSnippet === null && $r->hasFile('file')) {
+            $stored = $r->file('file')->store('uploads', 'public');
+            $fullPath = storage_path('app/public/' . $stored);
+            $filePaths[] = $fullPath;
+            $storedFilePath = 'storage/' . $stored;
+            $originalFileName = $r->file('file')->getClientOriginalName();
+            try {
+                $raw = $this->extractTextFromFile($fullPath);
+                $clean = $this->safeUtf8($raw, 2000);
+                $fileSnippet = $this->isMostlyPrintableText($clean) ? $clean : null;
+            } catch (\Throwable $e) {
+                Log::warning("[createSession] file extraction failed: " . $e->getMessage());
+                $fileSnippet = null;
+            }
+        }
 
         if ($r->filled('file_prompt')) {
             $storedFilePath = $r->input('file_prompt');
@@ -539,13 +597,49 @@ class ChatController extends Controller
 
         $r->validate([
             'prompt' => 'nullable|string|max:10000',
-            'file' => 'nullable|file|mimes:txt,pdf,docx|max:40960',
+            'file' => 'nullable|file|mimes:txt,pdf,docx,jpg,jpeg,png|max:204800',
+            'file_path' => 'nullable|string|max:10000',
+            'file_snippet' => 'nullable|string|max:200000',
+            'file_original_name' => 'nullable|string|max:255',
         ]);
 
         $userMsg = $r->input('prompt', '');
-        if ($r->hasFile('file')) {
-            $txt = substr(file_get_contents($r->file('file')->getRealPath()), 0, 2000);
-            $userMsg .= "\n\n[File content]\n{$txt}";
+
+        $fileSnippet = trim((string) $r->input('file_snippet', ''));
+        $filePath = trim((string) $r->input('file_path', ''));
+        $fileOrig = trim((string) $r->input('file_original_name', ''));
+
+        if ($fileSnippet !== '') {
+            $snippet = mb_substr($fileSnippet, 0, 20000);
+            $userMsg .= "\n\n[File: " . ($fileOrig ?: 'uploaded file') . "]\n" . $snippet;
+        } elseif ($filePath !== '') {
+            $relative = preg_replace('#^/storage/#', '', $filePath);
+            $full = storage_path('app/public/' . $relative);
+
+            if (file_exists($full) && is_readable($full)) {
+                try {
+                    $raw = $this->extractTextFromFile($full);
+                    $raw = $this->safeUtf8($raw, 200000);
+                    $raw = preg_replace("/\r\n|\r/", "\n", $raw);
+                    $raw = preg_replace("/\n{3,}/", "\n\n", $raw);
+                    $raw = trim($raw);
+                    if ($raw !== '') {
+                        $preview = mb_substr($raw, 0, 20000);
+                        $userMsg .= "\n\n[File: " . ($fileOrig ?: basename($relative)) . "]\n" . $preview;
+                    }
+                } catch (\Throwable $e) {
+                    Log::warning("[submitSession] Failed to extract text from uploaded file ({$filePath}): " . $e->getMessage());
+                }
+            } else {
+                Log::warning("[submitSession] file_path provided but file not found or unreadable: {$full}");
+            }
+        } elseif ($r->hasFile('file')) {
+            try {
+                $txt = substr(file_get_contents($r->file('file')->getRealPath()), 0, 2000);
+                if ($txt) $userMsg .= "\n\n[File content]\n{$txt}";
+            } catch (\Throwable $e) {
+                Log::warning("[submitSession] direct file read failed: " . $e->getMessage());
+            }
         }
 
         $session->messages()->create([
@@ -624,7 +718,6 @@ class ChatController extends Controller
             }
 
             $sText = trim(($sTitle ? $sTitle . "\n\n" : '') . implode("\n\n", $parts));
-
             if ($sText === '') $sText = $this->safeUtf8(json_encode($suggestionsJson, JSON_UNESCAPED_UNICODE), 2000);
 
             $suggestionsTextToSave = $sText;
@@ -1058,6 +1151,37 @@ class ChatController extends Controller
         $this->authorize('view', $session);
         $qs = Question::where('session_id', $session->id)->orderBy('order')->get();
         return response()->json($qs);
+    }
+
+    public function regenerate(Request $request, ChatSession $session)
+    {
+        try {
+            $user = Auth::user();
+
+            if ($session->user_id !== $user->id) {
+                return response()->json(['error' => 'Not authorized'], 403);
+            }
+
+            Log::info("Attempting regenerate for session {$session->id}");
+
+            $replyText = app(ChatService::class)->regenerateForSession($session);
+
+            return response()->json(['ok' => true, 'reply' => $replyText], 200);
+
+        } catch (\Throwable $e) {
+            Log::error("Regenerate failed for session {$session->id}: ".$e->getMessage());
+            Log::error($e->getTraceAsString());
+
+            if (config('app.debug')) {
+                return response()->json([
+                    'error' => 'Failed to regenerate',
+                    'exception_message' => $e->getMessage(),
+                    'trace' => explode("\n", $e->getTraceAsString(), 20)
+                ], 500);
+            }
+
+            return response()->json(['error' => 'Failed to regenerate'], 500);
+        }
     }
 
     public function history()

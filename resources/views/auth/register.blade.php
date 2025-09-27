@@ -13,6 +13,15 @@
 @endsection
 
 @section('content')
+@if($errors->any())
+  <div class="alert alert-danger">
+    <ul class="mb-0">
+      @foreach($errors->all() as $err)
+        <li>{{ $err }}</li>
+      @endforeach
+    </ul>
+  </div>
+@endif
 <div class="container">
   <div class="card register-card" style="width:400px;">
     <h3 class="text-center mb-3">Register</h3>
@@ -20,26 +29,31 @@
       @csrf
       <div class="mb-3">
         <label for="username" class="form-label">Username</label>
-        <input type="text" name="username" id="username" class="form-control" pattern="^[^\s]+$" title="Username must not contain spaces." required>
-        <small class="validation-error text-danger"></small>
+        <input type="text" name="username" id="username" class="form-control @error('username') is-invalid @enderror" value="{{ old('username') }}" required>
+          @error('username')
+            <div class="text-danger small mt-1">{{ $message }}</div>
+          @enderror
       </div>
 
       <div class="mb-3">
         <label for="email" class="form-label">Email</label>
-        <input type="email" name="email" id="email" class="form-control" pattern="^[a-zA-Z0-9._%+-]+@(gmail\.com|mail\.com|email\.com)$" title="Email must end with @gmail.com, @mail.com, or @email.com." required>
-        <small class="validation-error text-danger"></small>
+        <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" required>
+          @error('email')
+            <div class="text-danger small mt-1">{{ $message }}</div>
+          @enderror
       </div>
 
       <div class="mb-3">
         <label for="password" class="form-label">Password</label>
         <div class="input-group">
-          <input type="password" name="password" id="password" class="form-control" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{7,}$"
-            title="Must be ≥6 chars, 1 uppercase, 1 lowercase, 1 digit, 1 special." required>
+          <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" id="password" required>
           <span class="input-group-text" id="togglePassword" style="cursor: pointer;">
             <i class="fas fa-eye"></i>
           </span>
         </div>
-        <small class="validation-error text-danger"></small>
+          @error('password')
+            <div class="text-danger small mt-1">{{ $message }}</div>
+          @enderror
       </div>
 
       <div class="mb-3">
@@ -50,7 +64,6 @@
             <i class="fas fa-eye"></i>
           </span>
         </div>
-        <small class="validation-error text-danger"></small>
       </div>
 
       <div class="text-center">

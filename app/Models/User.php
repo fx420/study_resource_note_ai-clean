@@ -24,7 +24,7 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'is_admin'          => 'boolean',
+            'is_admin' => 'boolean',
             'password' => 'hashed',
         ];
     }

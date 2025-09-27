@@ -52,23 +52,23 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-        const btn = document.getElementById('newChatBtn');
-        if (!btn) return;
+            const btn = document.getElementById('newChatBtn');
+            if (!btn) return;
 
-        btn.addEventListener('click', () => {
-            Swal.fire({
-            title: 'Start a new chat?',
-            text:  'This will clear your current conversation. Continue?',
-            icon:  'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, start new',
-            cancelButtonText: 'Cancel',
-            }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = btn.dataset.route;
-            }
+            btn.addEventListener('click', () => {
+                Swal.fire({
+                title: 'Start a new chat?',
+                text:  'This will clear your current conversation. Continue?',
+                icon:  'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, start new',
+                cancelButtonText: 'Cancel',
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = btn.dataset.route;
+                }
+                });
             });
-        });
         });
     </script>
 
@@ -82,8 +82,15 @@
     <script src="{{ asset('js/sweetalert2.all.min.js') }}"></script>
     <!-- Vue JS -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <!-- html2canvas  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <!-- jsPDF UMD build -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
     <!-- Custom JS -->
     <script src="{{ asset('js/chat-box.js') }}"></script>
+    <script src="{{ asset('js/analytics.js') }}"></script>
 
     @yield('scripts')
 </body>

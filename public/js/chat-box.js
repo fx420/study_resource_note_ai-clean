@@ -16,34 +16,172 @@ document.addEventListener('DOMContentLoaded', () => {
         return tmp.textContent || tmp.innerText || '';
     }
 
-    function downloadHandler(e) {
+    async function downloadHandler(e) {
         const btn = e.currentTarget;
         const bubble = btn.closest('.chat-bubble');
         const contentEl = bubble ? bubble.querySelector('.bubble-content') : null;
 
+        const messageId = btn.dataset.messageId || btn.getAttribute('data-message-id') || null;
+        const sessionId = window.SESSION_ID || document.getElementById('chatMessages')?.dataset?.sessionId || null;
+
         if (!contentEl) return;
 
-        const html = contentEl.innerHTML || '';
-        const text = htmlToText(html);
+        if (typeof window.logEvent === 'function') {
+            try {
+                window.logEvent('download', {
+                    session_id: sessionId,
+                    message_id: messageId,
+                    format: 'pdf'
+                });
+            } catch (err) { console.warn('logEvent(download) failed', err); }
+        }
 
-        let fmt = prompt('Enter download format: "txt" or "doc" (default txt):', 'txt');
-        
-        if (!fmt) fmt = 'txt';
+        let fmt = prompt('Enter download format: "txt", "doc" or "pdf" (default pdf):', 'pdf');
+        if (!fmt) fmt = 'pdf';
         fmt = fmt.trim().toLowerCase();
-        if (fmt !== 'txt' && fmt !== 'doc') { alert('Unsupported format — using txt.'); fmt = 'txt'; }
+        if (fmt !== 'txt' && fmt !== 'doc' && fmt !== 'pdf') {
+            alert('Unsupported format — using pdf.');
+            fmt = 'pdf';
+        }
 
-        const ext = fmt === 'doc' ? 'doc' : 'txt';
-        const mime = 'text/plain;charset=utf-8';
-        const filename = `note-${Date.now()}.${ext}`;
-        const blob = new Blob([text], { type: mime });
-        const a = document.createElement('a');
+        const originalHtml = contentEl.innerHTML || '';
+        const text = (function(html) {
+            const tmp = document.createElement('div');
+            tmp.innerHTML = html.replace(/<br\s*\/?>/gi, '\n');
+            return tmp.textContent || tmp.innerText || '';
+        })(originalHtml);
 
-        a.href = URL.createObjectURL(blob);
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        URL.revokeObjectURL(a.href);
+        const timestamp = Date.now();
+        const baseName = `note-${timestamp}`;
+
+        try {
+            if (fmt === 'txt' || fmt === 'doc') {
+                const ext = fmt === 'doc' ? 'doc' : 'txt';
+                const mime = 'text/plain;charset=utf-8';
+                const blob = new Blob([text], { type: mime });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = `${baseName}.${ext}`;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+                return;
+            }
+
+            const jsPdfFactory = (window.jspdf && window.jspdf.jsPDF) ? window.jspdf.jsPDF
+                            : (typeof window.jsPDF === 'function' ? window.jsPDF : null);
+
+            if (!jsPdfFactory) {
+                const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = `${baseName}.txt`;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+                alert('jsPDF not available — saved as TXT instead.');
+                return;
+            }
+
+            const doc = new jsPdfFactory({ unit: 'pt', format: 'a4', compress: true });
+
+            const isMostlyText = (function(s) {
+                if (!s) return true;
+                const htmlOnly = s.replace(/<[^>]+>/g, '').trim();
+                return htmlOnly.length > 0 && (s.length - htmlOnly.length) < Math.max(200, s.length * 0.3);
+            })(originalHtml);
+
+            if (isMostlyText) {
+                const pageWidth = doc.internal.pageSize.getWidth();
+                const pageHeight = doc.internal.pageSize.getHeight();
+                const margin = 40;
+                const maxLineWidth = pageWidth - margin * 2;
+                const fontSize = 12;
+                doc.setFontSize(fontSize);
+
+                const lines = doc.splitTextToSize(text, maxLineWidth);
+                let cursorY = margin;
+                const lineHeight = Math.ceil(fontSize * 1.25);
+
+                for (let i = 0; i < lines.length; i++) {
+                    if (cursorY + lineHeight > pageHeight - margin) {
+                        doc.addPage();
+                        cursorY = margin;
+                    }
+                    doc.text(String(lines[i]), margin, cursorY);
+                    cursorY += lineHeight;
+                }
+
+                doc.save(`${baseName}.pdf`);
+                return;
+            }
+
+            const clone = contentEl.cloneNode(true);
+            clone.querySelectorAll && clone.querySelectorAll('.bubble-actions, .download-btn, button').forEach(n => n && n.remove());
+
+            const wrapper = document.createElement('div');
+            wrapper.style.background = '#ffffff';
+            wrapper.style.padding = '10px';
+            wrapper.style.width = '780px';
+            wrapper.appendChild(clone);
+            wrapper.style.position = 'fixed';
+            wrapper.style.left = '-9999px';
+            wrapper.style.top = '0';
+            document.body.appendChild(wrapper);
+
+            const htmlOptions = {
+                x: 10,
+                y: 10,
+                margin: [10, 10, 10, 10],
+                html2canvas: {
+                    scale: 1.2,
+                    useCORS: true,
+                    logging: false
+                }
+            };
+
+            let htmlRendered = false;
+
+            if (typeof doc.html === 'function') {
+                await new Promise((resolve, reject) => {
+                    try {
+                        const maybePromise = doc.html(wrapper, {
+                            ...htmlOptions,
+                            callback: function (docInstance) {
+                                htmlRendered = true;
+                                try {
+                                    docInstance.save(`${baseName}.pdf`);
+                                } catch (err) {
+                                    try { doc.save(`${baseName}.pdf`); } catch(e) {}
+                                }
+                                resolve();
+                            }
+                        });
+                        if (maybePromise && typeof maybePromise.then === 'function') {
+                            maybePromise.then(() => {
+                                if (!htmlRendered) {
+                                    try { doc.save(`${baseName}.pdf`); } catch(e) {}
+                                }
+                                resolve();
+                            }).catch(reject);
+                        }
+                    } catch (err) {
+                        reject(err);
+                    }
+                });
+            } else {
+                throw new Error('jsPDF html rendering not available in this build');
+            }
+
+            try { wrapper.remove(); } catch (e) {}
+
+            return;
+        } catch (err) {
+            console.error('Download error', err);
+            alert('Failed to generate download: ' + (err?.message || err));
+        }
     }
 
     function attachDownloadHandlerToButton(btn) {
@@ -234,29 +372,41 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
 
+                let json = null;
+                try {
+                    json = await res.json();
+                } catch (err) {
+                    json = null;
+                }
+
                 if (!res.ok) {
-                    let errText = await res.text().catch(() => null);
-                    try {
-                        const j = JSON.parse(errText);
-                        if (j && j.errors) {
-                            errText = JSON.stringify(j.errors);
-                        }
-                    } catch(e) {}
+                    let errText = (json && json.errors) ? JSON.stringify(json.errors) : (json && json.message) ? json.message : (await res.text().catch(()=>null));
                     if (statusEl) statusEl.innerHTML = `<span class="text-danger">Upload failed: ${escapeHtml(errText || res.statusText)}</span>`;
                     console.error('Upload failed', res.status, errText);
                     return;
                 }
 
-                const json = await res.json();
-
-                if (filePromptInput) filePromptInput.value = json.path || '';
+                if (filePromptInput) filePromptInput.value = json.path || json.storage_path || '';
                 if (fileOriginalNameInput) fileOriginalNameInput.value = json.original_name || f.name;
+                if (document.getElementById('fileSnippetInput')) document.getElementById('fileSnippetInput').value = json.snippet || '';
+                
+                if (typeof window.logEvent === 'function') {
+                    try {
+                        const session_id = window.SESSION_ID || (document.getElementById('chatMessages')?.dataset?.sessionId) || null;
+                        window.logEvent('upload', {
+                        session_id,
+                        file_path: json.path || null,
+                        original_file_name: json.original_name || json.originalName || (f && f.name) || null,
+                        mime: json.mime || f.type || null,
+                        size: json.size || f.size || null
+                        });
+                    } catch (e) { console.warn('logEvent(upload) failed', e); }
+                }
 
                 if (uploadedFileName) uploadedFileName.textContent = json.original_name || f.name;
 
                 const mime = json.mime || f.type || '';
                 const size = json.size || f.size || 0;
-
                 const snippetText = (json.snippet || '').toString();
 
                 if (snippetText && isMostlyPrintableText(snippetText)) {
@@ -276,7 +426,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 if (statusEl) statusEl.innerHTML = `<span class="text-success">File uploaded</span>`;
-
             } catch (err) {
                 console.error('Upload error', err);
                 if (statusEl) statusEl.innerHTML = `<span class="text-danger">Upload failed</span>`;
@@ -417,4 +566,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.querySelectorAll('.download-btn').forEach(btn => attachDownloadHandlerToButton(btn));
+
+    window.attachDownloadHandlerToButton = attachDownloadHandlerToButton;
+    window.downloadHandler = downloadHandler;
 });
